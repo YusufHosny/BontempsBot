@@ -1,4 +1,6 @@
-// Require the necessary discord.js classes
+// Require the necessary requirements
+const fs = require('node:fs');
+const path = require('node:path');
 const { Client, Events, GatewayIntentBits } = require('discord.js');
 const { token } = require('./config.json');
 
@@ -13,3 +15,30 @@ client.once(Events.ClientReady, c => {
 
 // Log in to Discord with your client's token
 client.login(token);
+
+// Create collection of commands
+client.commands = new Collection();
+
+// Initialize path to commands folder and create array with all commands
+const commandsPath = path.join(__dirname, 'commands');
+const commandFiles = fs.readdirSync(commandsPath).filter(file => file.endsWith('.js'));
+
+// Add each command to the collection
+for (const file of commandFiles) {
+	const filePath = path.join(commandsPath, file);
+	const command = require(filePath);
+	// Set a new item in the Collection with the key as the command name and the value as the exported module
+	if ('data' in command && 'execute' in command) {
+		client.commands.set(command.data.name, command);
+	} else {
+		console.log(`[WARNING] The command at ${filePath} is missing a required "data" or "execute" property.`);
+	}
+}
+
+// Interaction event listener
+client.on(Events.InteractionCreate, interaction => {
+    // Return if the interaction isnt a slash command
+    if (!interaction.isChatInputCommand()) return;
+    // Print interaction in the console
+	console.log(interaction);
+});
