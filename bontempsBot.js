@@ -1,4 +1,4 @@
-const TOKEN = "MTA3MDY5Njk0NTY2NTk3ODQ5OA.GgjhHq.Ere1LzS8dmdWSsLRglAe4Xl_9aClK1ZbI7s2b4";
+const TOKEN = "MTA3MDY5Njk0NTY2NTk3ODQ5OA.GlP9TV.o6wRBJryEA6CMEoVw8RsT3UwpIjtIGKsNrQaK8";
 
 const { REST, Routes } = require('discord.js');
 
