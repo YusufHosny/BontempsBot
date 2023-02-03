@@ -1,0 +1,19 @@
+{
+  "name": "bontempsbot",
+  "version": "1.0.0",
+  "description": "the BontempsBot Discord bot. Real.",
+  "main": "bontempsBot.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/YusufHosny/BontempsBot.git"
+  },
+  "author": "Yusuf Hosny",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/YusufHosny/BontempsBot/issues"
+  },
+  "homepage": "https://github.com/YusufHosny/BontempsBot#readme"
+}
