@@ -15,5 +15,8 @@
   "bugs": {
     "url": "https://github.com/YusufHosny/BontempsBot/issues"
   },
-  "homepage": "https://github.com/YusufHosny/BontempsBot#readme"
+  "homepage": "https://github.com/YusufHosny/BontempsBot#readme",
+  "dependencies": {
+    "eslint": "^8.33.0"
+  }
 }
