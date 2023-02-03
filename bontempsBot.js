@@ -36,9 +36,20 @@ for (const file of commandFiles) {
 }
 
 // Interaction event listener
-client.on(Events.InteractionCreate, interaction => {
-    // Return if the interaction isnt a slash command
-    if (!interaction.isChatInputCommand()) return;
-    // Print interaction in the console
-	console.log(interaction);
+client.on(Events.InteractionCreate, async interaction => {
+	if (!interaction.isChatInputCommand()) return;
+
+	const command = interaction.client.commands.get(interaction.commandName);
+
+	if (!command) {
+		console.error(`No command matching ${interaction.commandName} was found.`);
+		return;
+	}
+
+	try {
+		await command.execute(interaction);
+	} catch (error) {
+		console.error(error);
+		await interaction.reply({ content: 'There was an error while executing this command!', ephemeral: true });
+	}
 });
