@@ -18,5 +18,8 @@
   "homepage": "https://github.com/YusufHosny/BontempsBot#readme",
   "devDependencies": {
     "eslint": "^8.33.0"
+  },
+  "dependencies": {
+    "undici": "^5.17.1"
   }
 }
