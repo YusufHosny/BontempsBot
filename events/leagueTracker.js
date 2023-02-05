@@ -55,7 +55,7 @@ module.exports = {
             }
             
             
-            await sleep(10);
+            await sleep(1);
             index++;
         }
 	},
