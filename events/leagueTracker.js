@@ -28,7 +28,7 @@ module.exports = {
             const matchList =  await matchListResult.body.json();
 
             try {
-                if(!(matchList.length === 0))
+                if(matchList.length)
                 {
                     const matchId = matchList[0];
 
@@ -49,7 +49,7 @@ module.exports = {
                     // Send embed 
                     channel.send({ embeds: [embed] });
 
-                     timestamp = Math.floor(Date.now() / 1000);
+                    timestamp = Math.floor(Date.now() / 1000);
                 }
             } catch (error) {
                 console.error(error);
