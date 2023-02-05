@@ -1,6 +1,7 @@
 const { Events, EmbedBuilder } = require('discord.js');
 const { request } = require('undici');
-const { puuids, apiKey } = require('./leagueTrackerConfig.json')
+const { puuids } = require('./leagueTrackerConfig.json')
+const { apiKey } = require('../config.json')
 
 function sleep(s) {
     return new Promise(resolve => setTimeout(resolve, s * 1000));
