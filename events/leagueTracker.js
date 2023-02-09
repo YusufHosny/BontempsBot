@@ -32,6 +32,12 @@ module.exports = {
         // Continuously poll for matches and push embeds accordingly
         while(true)
         {
+            // Wait 60 seconds
+            await sleep(60 * 1000);
+            // Set time stamp to current time
+            timestamp = Math.floor(Date.now() / 1000);
+
+            // Iterate over all puuids
             for(let index = 0; index < puuids.length; index++)
             {         
                 try {
@@ -74,13 +80,7 @@ module.exports = {
                 } catch (error) {
                     console.error(error);
                 }
-            }
-
-            // Wait 60 seconds
-            await sleep(60 * 1000);
-            // Set time stamp to current time
-            timestamp = Math.floor(Date.now() / 1000);
-        
+            }       
         }
 	},
 };
