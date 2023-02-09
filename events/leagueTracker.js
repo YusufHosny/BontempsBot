@@ -63,10 +63,10 @@ module.exports = {
                                 pushDemotionEmbed(participant, leagueInfo, channel);
                             }
                         }
-
-                        // Wait 2 seconds and increment index
-                        await sleep(2);
                     }
+
+                    // Wait 2 seconds and increment index
+                    await sleep(2);
 
                 } catch (error) {
                     console.error(error);
