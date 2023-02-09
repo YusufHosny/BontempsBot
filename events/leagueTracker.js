@@ -2,7 +2,7 @@ const { Events } = require('discord.js');
 const { request } = require('undici');
 const { puuids } = require('./leagueTrackerConfig.json')
 const { apiKey } = require('../config.json')
-const { sleep, getLeagueInfoPuuid, getLeagueInfoSid, pushLeagueEmbed, pushDemotionEmbed } = require('../libraries/league.js');
+const { sleep, getLeagueInfoPuuid, getLeagueInfoSid, pushLeagueEmbed, pushDemotionEmbed } = require('../modules/league.js');
 
 
 module.exports = {
@@ -12,8 +12,10 @@ module.exports = {
         // Create and fill list of ranks for puuids
         const rankList = [];
         
+        // Fill list of all initial ranks
         for (let i = 0; i < puuids.length; i++) {
             const leagueInfo = await getLeagueInfoPuuid(puuids[i]);
+            
             if (leagueInfo !== null) rankList.push(leagueInfo.tier + leagueInfo.rank); 
             else  rankList.push("None"); 
         }
