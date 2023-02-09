@@ -25,17 +25,14 @@ module.exports = {
         // Fetch bontempsbot channel
         const channel = await client.channels.fetch("1071137172196958239");
 
-       
-        // Timestamp to start polling matches from, defaults to time where bot is run
-        let timestamp = Math.floor(Date.now() / 1000);
-
         // Continuously poll for matches and push embeds accordingly
         while(true)
         {
+            // Set time stamp to current time
+            const timestamp = Math.floor(Date.now() / 1000);
             // Wait 60 seconds
             await sleep(60 * 1000);
-            // Set time stamp to current time
-            timestamp = Math.floor(Date.now() / 1000);
+            
 
             // Iterate over all puuids
             for(let index = 0; index < puuids.length; index++)
@@ -74,8 +71,8 @@ module.exports = {
                         }
                     }
 
-                    // Wait 0.5 seconds and increment index
-                    await sleep(500);
+                    // Wait 0.2 seconds and increment index
+                    await sleep(200);
 
                 } catch (error) {
                     console.error(error);
