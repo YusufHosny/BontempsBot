@@ -40,27 +40,31 @@ async function getLeagueInfoSid(summonerid) {
 
 
 // Pushes a win/loss embed to a specified channel for a specific match participant
-async function pushLeagueEmbed(participant, rank, channel) {
+async function pushLeagueEmbed(participant, leagueInfo, channel) {
 
     // Create and format embed
     const embed = new EmbedBuilder();
 
     embed.setColor(participant.win ? "#10b529" : "#990c0c")
         .setTitle(`${participant.summonerName} ${participant.win ? "Won" : "Lost"}!`)
-        .setThumbnail(`https://static.bigbrain.gg/assets/lol/s12_rank_icons/${rank.replace(/ .*/,'').toLowerCase()}.png`)
         .setDescription(participant.win ? "What a fucking legend." :  "What a fucking Loser.")
         .setImage(`https://static.bigbrain.gg/assets/lol/riot_static/13.1.1/img/champion/${participant.championName}.png`)
-        .setFields([
+        .setFields(
             { name: 'K/D/A', value: `${participant.kills}/${participant.deaths}/${participant.assists}`, inline: true },
-            { name: 'Rank:', value: rank, inline: true}
-        ]
         );
+    
+
+    if(leagueInfo !== null)
+    {
+        embed.addFields({ name: 'Rank:', value: `${leagueInfo.tier} ${leagueInfo.rank} ${leagueInfo.leaguePoints} LP`, inline: true},)
+        .setThumbnail(`https://static.bigbrain.gg/assets/lol/s12_rank_icons/${leagueInfo.tier.toLowerCase()}.png`)
+    }
     
     channel.send({ embeds: [embed] });
 
 }
 
-// Pushes a win/loss embed to a specified channel for a specific match participant
+// Pushes a demotion/promotion embed to a specified channel for a specific match participant
 async function pushDemotionEmbed(participant, leagueInfo, channel) {
 
     // Create and format embed
@@ -69,7 +73,7 @@ async function pushDemotionEmbed(participant, leagueInfo, channel) {
     embed.setColor(participant.win ? "#10b529" : "#990c0c")
         .setTitle(`${participant.summonerName} ${participant.win ? "PROMOTED" : "DEMOTED"}!`)
         .setThumbnail(`https://static.bigbrain.gg/assets/lol/s12_rank_icons/${leagueInfo.tier.toLowerCase()}.png`)
-        .setDescription(participant.win ? `CONGRATS!!! BROTHER PROMOTED TO ${leagueInfo.tier}!` :  `BOO HOO. THIS KID DEMOTED TO ${leagueInfo.tier}.`)
+        .setDescription(participant.win ? `CONGRATS!!! BROTHER PROMOTED TO ${leagueInfo.tier} ${leagueInfo.rank}!` :  `BOO HOO. THIS KID DEMOTED TO ${leagueInfo.tier} ${leagueInfo.rank}.`)
     
     channel.send({ embeds: [embed] });
 
@@ -84,7 +88,7 @@ module.exports = {
         
         for (let i = 0; i < puuids.length; i++) {
             const leagueInfo = await getLeagueInfoPuuid(puuids[i]);
-            if (leagueInfo !== null) rankList.push(leagueInfo.tier); 
+            if (leagueInfo !== null) rankList.push(leagueInfo.tier + leagueInfo.rank); 
             else  rankList.push("None"); 
         }
 
@@ -126,13 +130,13 @@ module.exports = {
                     if(leagueInfo !== null)
                     {   
                         // If the rank changed
-                        if(leagueInfo.tier !== rankList[index])
+                        if((leagueInfo.tier + leagueInfo.rank) !== rankList[index])
                         {
                             pushDemotionEmbed(participant, leagueInfo, channel);
                         }
                     }
 
-                    pushLeagueEmbed(participant, leagueInfo === null ? "UNRANKED" : `${leagueInfo.tier} ${leagueInfo.rank}`, channel);
+                    pushLeagueEmbed(participant, leagueInfo, channel);
 
                     // Check for a duo
                     const duo = match.info.participants.find(participant => puuids.includes(participant.puuid) && participant.puuid != puuids[index]);
@@ -141,12 +145,12 @@ module.exports = {
                     if(typeof duo !== 'undefined')
                     {
                         const duoleagueInfo = await getLeagueInfoSid(duo.summonerId);
-                        pushLeagueEmbed(duo, duoleagueInfo === null ? "UNRANKED" : `${duoleagueInfo.tier} ${duoleagueInfo.rank}`, channel);
+                        pushLeagueEmbed(duo, duoleagueInfo, channel);
 
                         if(duoleagueInfo !== null)
                         {   
                             // If the rank changed
-                            if(duoleagueInfo.tier !== rankList[puuids.indexOf(duo.puuid)])
+                            if((duoleagueInfo.tier + leagueInfo.rank) !== rankList[puuids.indexOf(duo.puuid)])
                             {
                                 pushDemotionEmbed(duo, duoleagueInfo, channel);
                             }
