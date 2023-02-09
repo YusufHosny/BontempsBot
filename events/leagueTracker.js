@@ -71,8 +71,8 @@ module.exports = {
                         }
                     }
 
-                    // Wait 0.2 seconds and increment index
-                    await sleep(200);
+                    // Wait 0.075 seconds and increment index
+                    await sleep(75);
 
                 } catch (error) {
                     console.error(error);
