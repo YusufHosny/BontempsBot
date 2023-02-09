@@ -3,9 +3,9 @@ const { request } = require('undici');
 const { apiKey } = require('../config.json')
 
 module.exports = {
-    // Sleep for s Seconds
-    sleep(s) {
-        return new Promise(resolve => setTimeout(resolve, s * 1000));
+    // Sleep for ms miliseconds
+    sleep(ms) {
+        return new Promise(resolve => setTimeout(resolve, ms));
     },
 
     // Get League Info from API using PUUID

@@ -16,6 +16,8 @@ module.exports = {
         for (let i = 0; i < puuids.length; i++) {
             const leagueInfo = await getLeagueInfoPuuid(puuids[i]);
             
+            await sleep(100);
+
             if (leagueInfo !== null) rankList.push(leagueInfo.tier + leagueInfo.rank); 
             else  rankList.push("None"); 
         }
@@ -60,18 +62,22 @@ module.exports = {
                             // If the rank changed
                             if((leagueInfo.tier + leagueInfo.rank) !== rankList[index])
                             {
+                                rankList[index] = leagueInfo.tier + leagueInfo.rank;
                                 pushDemotionEmbed(participant, leagueInfo, channel);
                             }
                         }
                     }
 
-                    // Wait 2 seconds and increment index
-                    await sleep(2);
+                    // Wait 0.5 seconds and increment index
+                    await sleep(500);
 
                 } catch (error) {
                     console.error(error);
                 }
             }
+
+            // Wait 60 seconds
+            await sleep(60 * 1000);
             // Set time stamp to current time
             timestamp = Math.floor(Date.now() / 1000);
         
