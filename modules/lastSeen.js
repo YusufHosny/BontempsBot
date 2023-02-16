@@ -1,4 +1,5 @@
 module.exports = {    
+    // Create the lastSeen string for the current time
     getLastSeenString()
     {
         const d = new Date( Date.now() );
