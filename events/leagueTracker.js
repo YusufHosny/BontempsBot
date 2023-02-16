@@ -2,7 +2,8 @@ const { Events } = require('discord.js');
 const { request } = require('undici');
 const { puuids } = require('./leagueTrackerConfig.json')
 const { apiKey } = require('../config.json')
-const { sleep, getLeagueInfoPuuid, getLeagueInfoSid, pushLeagueEmbed, pushDemotionEmbed } = require('../modules/league.js');
+const { getLeagueInfoPuuid, getLeagueInfoSid, pushLeagueEmbed, pushDemotionEmbed } = require('../modules/league.js');
+const { sleep } = require('../modules/general.js');
 
 
 module.exports = {
