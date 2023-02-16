@@ -1,5 +1,5 @@
 const { SlashCommandBuilder } = require('discord.js');
-const { getUserList } = require('../events/lastSeenInitializer.js');
+const { userList } = require('../events/lastSeenInitializer.js');
 
 
 module.exports = {
@@ -12,8 +12,6 @@ module.exports = {
                 .setRequired(true)),
 
 	async execute(interaction) {
-        // Get list of users
-        userList = getUserList();
         // Get target user
         const target = interaction.options.getUser('target');
 
