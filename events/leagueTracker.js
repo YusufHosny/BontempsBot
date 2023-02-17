@@ -23,34 +23,44 @@ module.exports = {
             else  rankList.push("None"); 
         }
 
+        // Create and fill list of latest matches
+        const latestMatchList = [];
+
+        // Fill list of latest match for each puuid
+        for (let i = 0; i < puuids.length; i++) {
+            // Get list with the latest ranked match for this puuid
+            const matchListResult = await request(`https://europe.api.riotgames.com/lol/match/v5/matches/by-puuid/${puuids[i]}/ids?startTime=0&type=ranked&start=0&count=1&api_key=${apiKey}`);
+            const matchList =  await matchListResult.body.json();
+
+            // Get the match
+            const matchId = matchList[0];
+            // Add matchId to latest match list
+            latestMatchList.push(matchId);
+        }
+
         // Fetch bontempsbot channel
         const channel = await client.channels.fetch("1071137172196958239");
 
-        let timestampNext = Math.floor(Date.now() / 1000);
-        
+
         // Continuously poll for matches and push embeds accordingly
         while(true)
         {
-            // Set time stamp to current time
-            const timestamp = timestampNext;
             // Wait 60 seconds
             await sleep(60 * 1000);
             
-            timestampNext = Math.floor(Date.now() / 1000);
             // Iterate over all puuids
             for(let index = 0; index < puuids.length; index++)
             {         
                 try {
                     // Get list of ranked matches since timestamp for this puuid
-                    const matchListResult = await request(`https://europe.api.riotgames.com/lol/match/v5/matches/by-puuid/${puuids[index]}/ids?startTime=${timestamp}&type=ranked&start=0&count=2&api_key=${apiKey}`);
+                    const matchListResult = await request(`https://europe.api.riotgames.com/lol/match/v5/matches/by-puuid/${puuids[index]}/ids?startTime=0&type=ranked&start=0&count=2&api_key=${apiKey}`);
                     const matchList =  await matchListResult.body.json();
                 
-                    // If there are matches since timestamp
-                    if(matchList.length)
-                    {
-                        // Get the match
-                        const matchId = matchList[0];
+                    // Get the match
+                    const matchId = matchList[0];
 
+                    if(matchId !== latestMatchList[index]) {
+                        latestMatchList[index] = matchId;
                         // Pull match data from riot API
                         const matchResult = await request(`https://europe.api.riotgames.com/lol/match/v5/matches/${matchId}?api_key=${apiKey}`);
                         const match = await matchResult.body.json();
@@ -68,11 +78,14 @@ module.exports = {
                             // If the rank changed
                             if((leagueInfo.tier + leagueInfo.rank) !== rankList[index])
                             {
+                                // Update rank list
                                 rankList[index] = leagueInfo.tier + leagueInfo.rank;
                                 pushDemotionEmbed(participant, leagueInfo, channel);
                             }
                         }
+
                     }
+                    
 
                     // Wait 0.075 seconds and increment index
                     await sleep(75);
