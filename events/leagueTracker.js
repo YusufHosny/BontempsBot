@@ -42,6 +42,7 @@ module.exports = {
             {         
                 try {
                     // Get list of ranked matches since timestamp for this puuid
+                    console.log(`https://europe.api.riotgames.com/lol/match/v5/matches/by-puuid/${puuids[index]}/ids?startTime=${timestamp}&type=ranked&start=0&count=2&api_key=${apiKey}`);
                     const matchListResult = await request(`https://europe.api.riotgames.com/lol/match/v5/matches/by-puuid/${puuids[index]}/ids?startTime=${timestamp}&type=ranked&start=0&count=2&api_key=${apiKey}`);
                     const matchList =  await matchListResult.body.json();
                 
