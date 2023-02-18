@@ -3,7 +3,7 @@ const { request } = require('undici');
 const { apiKey } = require('../config.json')
 
 // Congratulate player for hitting masters
-function congratulateMasters() {
+function congratulateMasters(channel) {
     channel.send('HE FUCKONG MADE IT TO MASTERES WTFFF I CANT HANDLE IT IM SCREAMINGNGGGG OMG PLEASE AUTOGRAPHHH');
 
     for(let i = 0; i < 10; i++){
@@ -73,7 +73,7 @@ module.exports = {
                         .setThumbnail(`https://static.bigbrain.gg/assets/lol/s12_rank_icons/master.png`)
 
                     // Send masters congratulations
-                    congratulateMasters();
+                    congratulateMasters(channel);
                 } else {
                     // Display diamond 1 100 lp
                     embed.addFields({ name: 'Rank:', value: `${leagueInfo.tier} ${leagueInfo.rank} ${leagueInfo.leaguePoints} LP`, inline: true},)
