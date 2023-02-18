@@ -1,11 +1,14 @@
 const { Events } = require('discord.js');
 const { getLastSeenString } = require('../modules/lastSeen.js');
 
+// Last seen user class
 class LSUser
 {
-    constructor(userId, time) {
+    constructor(userId, lastSeen) {
         this.id = userId;
-        this.lastSeen = time;
+        this.lastSeen = lastSeen;
+
+        // Defaults to offline
         this.online = false;
     }
 }

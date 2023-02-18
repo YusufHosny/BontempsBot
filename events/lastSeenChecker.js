@@ -2,6 +2,17 @@ const { Events } = require('discord.js');
 const { getLastSeenString } = require('../modules/lastSeen.js');
 const { userList } = require('./lastSeenInitializer.js');
 
+// Last seen user class
+class LSUser
+{
+    constructor(userId, lastSeen) {
+        this.id = userId;
+        this.lastSeen = lastSeen;
+
+        // Defaults to offline
+        this.online = false;
+    }
+}
 
 
 
@@ -13,7 +24,15 @@ module.exports = {
         if(oldPresence?.status === newPresence.status) return;
         
         // Find the user in local userList with the same id as the presence user
-        const user = userList.find(user => user.id === newPresence.member.id);
+        let user = userList.find(user => user.id === newPresence.member.id);
+
+        // If user doesnt exist adds them
+        if(typeof user === 'undefined') {
+            userList.push(new LSUser(newPresence.member.id, getLastSeenString()));
+            user = userList.slice(-1);
+        }
+
+        
 
         // If not offline
         if(newPresence.status !== 'offline') {
