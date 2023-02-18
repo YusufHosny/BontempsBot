@@ -65,35 +65,12 @@ module.exports = {
         
         // If theres League info
         if(leagueInfo !== null) {
-            // If the player is diamond 1 100 lp
-            if(leagueInfo.tier + leagueInfo.rank + leagueInfo.leaguePoints === 'DIAMONDI100') {
-                // Get all masters in euw
-                const mastersResult = await request(`https://euw1.api.riotgames.com/lol/league/v4/masterleagues/by-queue/RANKED_SOLO_5x5?api_key=${apiKey}}`);
-                const masterTier = await mastersResult.body.json();
-                const masters = masterTier.entries;
-                
-                // Check if there is a master player with this id
-                const master = masters.find(master => master.summonerId == participant.summonerId);
+            // Display rank
+            embed.addFields({ name: 'Rank:', value: `${leagueInfo.tier} ${leagueInfo.rank} ${leagueInfo.leaguePoints} LP`, inline: true},)
+                .setThumbnail(`https://static.bigbrain.gg/assets/lol/s12_rank_icons/${leagueInfo.tier.toLowerCase()}.png`) 
 
-                // If the player exists return true
-                const isMasters = !(typeof master === 'undefined');
-
-                // If the player is masters display the masters rank
-                if(isMasters){
-                    embed.addFields({ name: 'Rank:', value: `MASTERS ${master.leaguePoints} LP`, inline: true},)
-                        .setThumbnail(`https://static.bigbrain.gg/assets/lol/s12_rank_icons/master.png`)
-
-                    // Send masters congratulations
-                    congratulateMasters(channel);
-                } else {
-                    // Display diamond 1 100 lp
-                    embed.addFields({ name: 'Rank:', value: `${leagueInfo.tier} ${leagueInfo.rank} ${leagueInfo.leaguePoints} LP`, inline: true},)
-                        .setThumbnail(`https://static.bigbrain.gg/assets/lol/s12_rank_icons/${leagueInfo.tier.toLowerCase()}.png`)
-                }
-            } else {
-                // Display rank
-                embed.addFields({ name: 'Rank:', value: `${leagueInfo.tier} ${leagueInfo.rank} ${leagueInfo.leaguePoints} LP`, inline: true},)
-                    .setThumbnail(`https://static.bigbrain.gg/assets/lol/s12_rank_icons/${leagueInfo.tier.toLowerCase()}.png`) 
+            if(leagueInfo.tier === 'MASTER') {
+                congratulateMasters(channel);
             }
         } else {
             // Display unranked
