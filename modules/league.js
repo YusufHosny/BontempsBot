@@ -19,7 +19,18 @@ module.exports = {
         const summonerResult = await request(`https://euw1.api.riotgames.com/lol/summoner/v4/summoners/by-puuid/${puuid}?api_key=${apiKey}`);
         const summoner = await summonerResult.body.json();
 
-        this.getLeagueInfoSid(summoner.id);
+        // Get player league info
+        const leagueInfoResult = await request(`https://euw1.api.riotgames.com/lol/league/v4/entries/by-summoner/${summoner.id}?api_key=${apiKey}`);
+        const leagueInfoList = await leagueInfoResult.body.json();
+
+        // If the list of league infos has entries, find the solo duo entry and return it
+        if(leagueInfoList.length) 
+        {
+            const leagueInfo = leagueInfoList.find(leagueInfo => leagueInfo.queueType === "RANKED_SOLO_5x5");
+            if(typeof leagueInfo !== 'undefined') return leagueInfo;
+        }
+
+        return null;
     },
 
     // Get League Info from API using Summoner ID
