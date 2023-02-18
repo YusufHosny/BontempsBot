@@ -2,6 +2,15 @@ const { EmbedBuilder } = require('discord.js');
 const { request } = require('undici');
 const { apiKey } = require('../config.json')
 
+// Congratulate player for hitting masters
+function congratulateMasters() {
+    channel.send('HE FUCKONG MADE IT TO MASTERES WTFFF I CANT HANDLE IT IM SCREAMINGNGGGG OMG PLEASE AUTOGRAPHHH');
+
+    for(let i = 0; i < 10; i++){
+        channel.send('AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA');
+    }
+}
+
 module.exports = {
     // Get League Info from API using PUUID
     async getLeagueInfoPuuid(puuid) {
@@ -63,7 +72,8 @@ module.exports = {
                     embed.addFields({ name: 'Rank:', value: `MASTERS ${master.leaguePoints} LP`, inline: true},)
                         .setThumbnail(`https://static.bigbrain.gg/assets/lol/s12_rank_icons/master.png`)
 
-                    channel.send('');
+                    // Send masters congratulations
+                    congratulateMasters();
                 } else {
                     // Display diamond 1 100 lp
                     embed.addFields({ name: 'Rank:', value: `${leagueInfo.tier} ${leagueInfo.rank} ${leagueInfo.leaguePoints} LP`, inline: true},)
