@@ -10,18 +10,7 @@ module.exports = {
         const summonerResult = await request(`https://euw1.api.riotgames.com/lol/summoner/v4/summoners/by-puuid/${puuid}?api_key=${apiKey}`);
         const summoner = await summonerResult.body.json();
 
-        // Get player league info
-        const leagueInfoResult = await request(`https://euw1.api.riotgames.com/lol/league/v4/entries/by-summoner/${summoner.id}?api_key=${apiKey}`);
-        const leagueInfoList = await leagueInfoResult.body.json();
-
-        // If the list of league infos has entries, find the solo duo entry and return it
-        if(leagueInfoList.length) 
-        {
-            const leagueInfo = leagueInfoList.find(leagueInfo => leagueInfo.queueType === "RANKED_SOLO_5x5");
-            if(typeof leagueInfo !== 'undefined') return leagueInfo;
-        }
-
-        return null;
+        this.getLeagueInfoSid(summoner.id);
     },
 
     // Get League Info from API using Summoner ID
@@ -54,15 +43,43 @@ module.exports = {
                 { name: 'K/D/A', value: `${participant.kills}/${participant.deaths}/${participant.assists}`, inline: true },
             );
         
-
+        // If theres League info
         if(leagueInfo !== null) {
-            embed.addFields({ name: 'Rank:', value: `${leagueInfo.tier} ${leagueInfo.rank} ${leagueInfo.leaguePoints} LP`, inline: true},)
-            .setThumbnail(`https://static.bigbrain.gg/assets/lol/s12_rank_icons/${leagueInfo.tier.toLowerCase()}.png`)
-        }
-        else {
+            // If the player is diamond 1 100 lp
+            if(leagueInfo.tier + leagueInfo.rank + leagueInfo.leaguePoints === 'DIAMONDI100') {
+                // Get all masters in euw
+                const mastersResult = await request(`https://euw1.api.riotgames.com/lol/league/v4/masterleagues/by-queue/RANKED_SOLO_5x5?api_key=${apiKey}}`);
+                const masterTier = await mastersResult.body.json();
+                const masters = masterTier.entries;
+                
+                // Check if there is a master player with this id
+                const master = masters.find(master => master.summonerId == participant.summonerId);
+
+                // If the player exists return true
+                const isMasters = !(typeof master === 'undefined');
+
+                // If the player is masters display the masters rank
+                if(isMasters){
+                    embed.addFields({ name: 'Rank:', value: `MASTERS ${master.leaguePoints} LP`, inline: true},)
+                        .setThumbnail(`https://static.bigbrain.gg/assets/lol/s12_rank_icons/master.png`)
+
+                    channel.send('');
+                } else {
+                    // Display diamond 1 100 lp
+                    embed.addFields({ name: 'Rank:', value: `${leagueInfo.tier} ${leagueInfo.rank} ${leagueInfo.leaguePoints} LP`, inline: true},)
+                        .setThumbnail(`https://static.bigbrain.gg/assets/lol/s12_rank_icons/${leagueInfo.tier.toLowerCase()}.png`)
+                }
+            } else {
+                // Display rank
+                embed.addFields({ name: 'Rank:', value: `${leagueInfo.tier} ${leagueInfo.rank} ${leagueInfo.leaguePoints} LP`, inline: true},)
+                    .setThumbnail(`https://static.bigbrain.gg/assets/lol/s12_rank_icons/${leagueInfo.tier.toLowerCase()}.png`) 
+            }
+        } else {
+            // Display unranked
             embed.addFields({ name: 'Rank:', value: "UNRANKED", inline: true},)
         }
         
+        // Send embed
         channel.send({ embeds: [embed] });
 
     },
