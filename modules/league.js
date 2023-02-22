@@ -1,6 +1,6 @@
 const { EmbedBuilder } = require('discord.js');
 const { request } = require('undici');
-const { apiKey } = require('../config.json')
+const { apiKey } = require('../config.json');
 
 module.exports = {
     // Get League Info from API using PUUID
@@ -80,5 +80,18 @@ module.exports = {
         
         channel.send({ embeds: [embed] });
 
-    },
+    },// Pushes rank embed to a specified channel for a specific summoner 
+    async pushRankEmbed(summoner, leagueInfo,channel){
+        
+        // Create and format embed
+        const embed = new EmbedBuilder();
+
+        embed.setColor( "#10b529")
+            .setTitle(`${summoner.name} is ${leagueInfo.tier}!`)
+            .setThumbnail(`https://static.bigbrain.gg/assets/lol/s12_rank_icons/${leagueInfo.tier.toLowerCase()}.png`)
+            .setDescription();
+        channel.send({ embeds: [embed] });
+
+
+    }
 }

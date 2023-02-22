@@ -1,8 +1,9 @@
 const { SlashCommandBuilder } = require('discord.js');
 const { request } = require('undici');
-const { getLeagueInfoSid } = require('../modules/league.js');
+const { getLeagueInfoSid, pushRankEmbed } = require('../modules/league.js');
 const { apiKey } = require('../config.json'); 
 const league = require('../modules/league.js');
+
 
 
 module.exports = {
@@ -28,7 +29,8 @@ module.exports = {
         // If the league info exists send the rank
         if(leagueInfo !== null) {
             // Send rank
-            await interaction.reply(`${summoner.name} is currently ${leagueInfo.tier} ${leagueInfo.tier === 'MASTER' ? '' : leagueInfo.rank} ${leagueInfo.leaguePoints} LP`);
+           // await interaction.reply(`${summoner.name} is currently ${leagueInfo.tier} ${leagueInfo.tier === 'MASTER' ? '' : leagueInfo.rank} ${leagueInfo.leaguePoints} LP`);
+            //pushRankEmbed(summoner,leagueInfo,interaction.channel);
         }
         else {
             // Send not found message
