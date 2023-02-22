@@ -80,18 +80,18 @@ module.exports = {
         
         channel.send({ embeds: [embed] });
 
-    },// Pushes rank embed to a specified channel for a specific summoner 
+    },
+    
+    // Pushes rank embed to a specified channel for a specific summoner 
     async pushRankEmbed(summoner, leagueInfo,channel){
-        
         // Create and format embed
         const embed = new EmbedBuilder();
 
-        embed.setColor( "#10b529")
+        embed.setColor("#10b529")
             .setTitle(`${summoner.name} is ${leagueInfo.tier}!`)
-            .setThumbnail(`https://static.bigbrain.gg/assets/lol/s12_rank_icons/${leagueInfo.tier.toLowerCase()}.png`)
-            .setDescription();
+            .setThumbnail(`https://static.bigbrain.gg/assets/lol/s12_rank_icons/${leagueInfo.tier.toLowerCase()}.png`);
+
+        
         channel.send({ embeds: [embed] });
-
-
-    }
+    },
 }

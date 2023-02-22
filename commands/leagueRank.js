@@ -30,7 +30,7 @@ module.exports = {
         if(leagueInfo !== null) {
             // Send rank
            // await interaction.reply(`${summoner.name} is currently ${leagueInfo.tier} ${leagueInfo.tier === 'MASTER' ? '' : leagueInfo.rank} ${leagueInfo.leaguePoints} LP`);
-            //pushRankEmbed(summoner,leagueInfo,interaction.channel);
+            pushRankEmbed(summoner, leagueInfo, interaction.channel);
         }
         else {
             // Send not found message
