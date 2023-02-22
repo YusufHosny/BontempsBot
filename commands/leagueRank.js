@@ -2,7 +2,6 @@ const { SlashCommandBuilder } = require('discord.js');
 const { request } = require('undici');
 const { getLeagueInfoSid, pushRankEmbed } = require('../modules/league.js');
 const { apiKey } = require('../config.json'); 
-const league = require('../modules/league.js');
 
 
 
