@@ -2,29 +2,16 @@ const { Events } = require('discord.js');
 
 
 module.exports = {
-    name: Events.MessageReactionAdd ,
-    async  execute(messageReaction , user){
+    name: Events.MessageReactionAdd,
+    async execute(messageReaction) {
         const channel = messageReaction.message.channel; 
-        const reaction = await messageReaction.fetch() ; 
+        await messageReaction.fetch();  
+        
         if(messageReaction.emoji.toString() === '❤️'){
             channel.send('WTF BRACE'); 
-
         }
-        if(messageReaction.emoji.toString() === '😭'){
+        else if(messageReaction.emoji.toString() === '😭'){
             channel.send('😭😭😭'); 
-
         }
-
-        
-
     }
-        
-
-
-    }
-
-
-
-
-
-
+}
